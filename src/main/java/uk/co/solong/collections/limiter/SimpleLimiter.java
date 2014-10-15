@@ -43,7 +43,7 @@ public class SimpleLimiter implements Limiter {
 				} else {
 					DateTime timeAdded = callDamElement.getDateTimeAdded();
 					DateTime now = new DateTime();
-					if (timeAdded.isAfter(now)) {
+					if (timeAdded == null || timeAdded.isAfter(now)) {
 						return false;
 					}
 					Duration difference = new Interval(timeAdded, now)
