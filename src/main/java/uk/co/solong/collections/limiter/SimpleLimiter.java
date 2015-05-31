@@ -16,13 +16,13 @@ public class SimpleLimiter implements Limiter {
 
     private static final Logger logger = LoggerFactory.getLogger(SimpleLimiter.class);
 
-    private final BlockingQueue<CallDamElement> queue;
+    private final BlockingQueue<CallElement> queue;
     private final Duration period;
     private final Runnable purge;
 
     public SimpleLimiter(final int upperLimit, final Duration duration, final long purgePeriod, final TimeUnit purgeUnit) {
         this.period = duration;
-        this.queue = new ArrayBlockingQueue<CallDamElement>(upperLimit);
+        this.queue = new ArrayBlockingQueue<CallElement>(upperLimit);
         this.purge = new Runnable() {
 
             @Override
@@ -36,7 +36,7 @@ public class SimpleLimiter implements Limiter {
                 }
             }
 
-            private boolean isTooOld(CallDamElement callDamElement) {
+            private boolean isTooOld(CallElement callDamElement) {
                 if (callDamElement == null) {
                     return false;
                 } else {
@@ -55,17 +55,17 @@ public class SimpleLimiter implements Limiter {
 
         ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
         service.scheduleAtFixedRate(purge, 0, purgePeriod, purgeUnit);
-        logger.info("Scheduling CallDam purge every {} {}", purgePeriod, purgeUnit.toString());
+        logger.info("Scheduling purge every {} {}", purgePeriod, purgeUnit.toString());
 
         if (period.getStandardDays() < 1) {
             if (period.getStandardHours() < 1) {
                 if (period.getStandardMinutes() < 1) {
-                    logger.info("Call Dam limit set to {} calls per {} seconds", upperLimit, period.getStandardSeconds());
+                    logger.info("Call limit set to {} calls per {} seconds", upperLimit, period.getStandardSeconds());
                 } else {
-                    logger.info("Call Dam limit set to {} calls per {} minutes", upperLimit, period.getStandardMinutes());
+                    logger.info("Call limit set to {} calls per {} minutes", upperLimit, period.getStandardMinutes());
                 }
             } else {
-                logger.info("Call Dam limit set to {} calls per {} hours", upperLimit, period.getStandardHours());
+                logger.info("Call limit set to {} calls per {} hours", upperLimit, period.getStandardHours());
             }
         }
     }
@@ -76,12 +76,12 @@ public class SimpleLimiter implements Limiter {
 
     @Override
     public void clockIn() throws InterruptedException {
-        CallDamElement element = new CallDamElement();
+        CallElement element = new CallElement();
         queue.put(element);
         element.initialize();
     }
 
-    private static class CallDamElement {
+    private static class CallElement {
         private DateTime dateTimeAdded;
 
         public void initialize() {
