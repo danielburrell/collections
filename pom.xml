@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>uk.co.solong</groupId>
     <artifactId>collections</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.2</version>
     <name>SoLong Collections</name>
     <description>A supplement to the Java Collections library.</description>
     <licenses>
@@ -147,7 +147,7 @@
         <url>https://github.com/danielburrell/collections</url>
         <connection>scm:git:git://github.com/danielburrell/collections.git</connection>
         <developerConnection>scm:git:git@github.com:danielburrell/collections.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>collections-0.0.2</tag>
     </scm>
     <url>www.solong.co.uk/collections</url>
 </project>
